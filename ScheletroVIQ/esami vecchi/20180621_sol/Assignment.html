@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 21 Giugno 2018</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+    <script src="analfabeti.js"></script>
+	<meta charset="utf-8">
+	<style>
+		.italia {color: firebrick; font-weight: bold; font-size: 120%;}
+	</style>
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 21 Giugno 2018</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico pubblicato all'interno di un
+	<a href="http://espresso.repubblica.it/inchieste/2017/03/07/news/analfabeti-funzionali-il-dramma-italiano-chi-sono-e-perche-il-nostro-paese-e-tra-i-peggiori-1.296854"
+	>articolo de L'Espresso</a> del 21 Marzo 2017.</p>
+
+<img src="EspressoAnalfabetiFunzionali.png" style="width:50%;margin-left:15%;">
+
+    <p>Il grafico (nell'articolo) è accompagnato dalla seguente didascalia:<br>
+        <em>Distribuzione degli analfabeti funzionali (%) nel quadro dei 33 paesi partecipanti allo studio PIAAC.<br>
+            L'Italia ha tra i risultati più alti in Europa (28%), preceduta solo dalla Turchia.<br>
+            Fonte: Inapp su dati Ocse-Piaac</em></p>
+
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+        <p>La domanda è abbastanza chiaramente definita nella didascalia.</p>
+        <p>L'obiettivo del grafico è mostrare i livelli di analfabetismo funzionale in diversi paesi
+        (quelli che aderiscono al progetto Ocse-Piaac) ed evidenziare come l'Italia abbia valori
+        piuttosto alti.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+        <p>In generale i dati sono ragionevolmente adatti a rispondere alla domanda:
+            si tratta di percentuali di analfabeti funzionali sulle popolazioni totali delle nazioni.</p>
+        <p>I dati in quanto tali sono perfettamente confrontabili, non sarebbero invece confrontabili
+        i numeri assoluti di analfabeti perchè i paesi hanno popolazioni molti diverse.</p>
+        <p>Esistono due aspetti anomali da segnalare:</p>
+        <ul>
+            <li>Due "paesi" ("Giacarta (Indonesia)" e "Belgio (Fiandre)") non rappresentano
+            delle intere nazioni ma delle sotto-aree. Questi valori potrebbero non essere
+            rappresentativi delle nazioni relative e quindi non direttamente confrontabili.</li>
+            <li>Due aree appaiono nel diagramma senza etichette.
+                Per questo si possono fare diverse ipotesi (elencate dalla meno ragionevole alla più ragionevole):
+                <ul>
+                    <li>i rettangoli non etichettati non fanno riferimento ad alcun paese e sono
+                        presenti per qualche motivo non chiaro
+                        (ad es. solo per mantenere la forma generale del diagramma)</li>
+                    <li>fanno riferimento a due paesi di cui non è noto il nome</li>
+                    <li>per qualche errore le due etichette non compaiono nel grafico
+                        (questa è la spiegazione corretta: il diagramma viene mostrato
+                        senza etichetta in alcuni browser e correttamente in altri)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <p>Un aspetto secondario è rappresentato dal fatto che i dati sono riportati senza
+        alcuna cifra decimale ma apparentemente ci sono stati con differenze inferiori all'1%
+        che non possono essere discriminati a causa della limitata accuratezza dei dati.</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>Il diagramma è un treemap che è adatto a rappresentare una relazione
+        di tipo parte-tutto. Perciò se il rettangolo "Giacarta (Indonesia)" occupa circa il 10%
+        dell'area del grafico complessivo, dovrebbe rappresentare la stessa percentuale e non il 69%.
+    </p>
+        <p>Trattandosi di percentuali di analfabeti funzionali sulla popolazione dei diversi
+        paesi, tali valori ovviamente non sommano a 100%, requisito base per questo tipo
+        di diagramma.</p>
+        <p>Quindi non esiste in assoluto la proporzionalità.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>L'aspetto che non ha una chiara utilità è la colorazione delle tessere
+    che compongono il diagramma. Potrebbero rappresentare diversi livelli
+    ma questo non è indicato in alcun modo.</p>
+        <p>
+            Come aspetto secondario, la dimensione delle etichette non ha nessun ruolo apparente.
+        </p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) -->
+        <p>
+            Con riferimento alla colorazione di cui sopra, mancando una legenda,
+            oltre a non essere utili, i colori diversi confondono il lettore.
+        </p>
+        <p>
+            L'orientamento delle etichette rende difficile la lettura.
+        </p>
+        <p>Oltre alla inadeguatezza del tipo di grafico ai dati da mostrare, l'orientamento
+        diverso dei rettangoli e le proporzioni variabili rendono il confronto difficile.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<div class="answer" id="redesign">
+	<!-- sostituire il <p> </p> seguente con un <div></div>
+		contenente il re-design -->
+
+	<h3>Soluzione 1: dot plot</h3>
+	<div id="graphDot"></div>
+
+	<h3>Soluzione 2: bar plot</h3>
+	<div id="graphBar"></div>
+
+    <h3>Soluzione 3: bar plot con "direct labeling"</h3>
+    <div id="graphBarDirect"></div>
+
+    <h3>Soluzione 4: box e violin plots</h3>
+    <table>
+        <tr>
+	<td id="graphBox"></td>
+    <td id="graphViolin"></td>
+        </tr>
+    </table>
+
+    <h3>Soluzione 5: curva delle frequenze (poligono di frequenza)</h3>
+    <div id="graphPoly"></div>
+
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Volendo rappresentare la distribuzione della media dei voti per gli appelli del primo semestre di tutti gli studenti del
+        primo anno, quale tipo di diagramma risulta più appropriato?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Diagramma a punti (scatter)</li>
+			<li>Diagramma a mappa (treemap)</li>
+			<li class="selected">Diagramma a linee</li>
+			<li>Diagramma a pendenza (slope)</li>
+			<li>Diagramma a torta</li>
+		</ul>
+	</div>
+    <p class="hint">I valori delle medie degli studedenti sono continui (tra 18 e 30) e non discreti come i singoli voti.</p>
+    <p class="hint">Uno dei modi standard di rappresentare una distribuzione specie per valori continui è tramite un
+        <em>frequency poligon</em> che è un diagramma a linee.</p>
+    <p class="hint">I punti potrebbero essere utilizzati se i valori fossero stati discreti.</p>
+    <p class="hint">I diagrammi a torta o treemap potrebbero rappresentare una distribuzione di valori discreti
+    con il limite che entrambi usano aree (angoli).</p>
+</section>
+<section>
+	<div class="question">
+        Quale istruzione permette di eseguire la funzione
+        <code>start</code> quando la pagina HTML è pronta?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>document.oncomplete= () => start();</code></li>
+			<li><code>window.onload=start();</code></li>
+			<li class="selected"><code>window.onload=start;</code></li>
+			<li><code>document.onready=start;</code></li>
+			<li><code>document.onready=start();</code></li>
+		</ul>
+	</div>
+    <p class="hint">L'unico attributo predefinito utilizzabile per questo scopo è <code>window.onload</code>.</p>
+    <p class="hint">Tra le due alternative, <code>start</code> è quella corretta. L'altra, <code>start()</code>
+    eseguirebbe quanto restituito dalla funzione e non la funzione stessa.</p>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+
+
+
+<script>
+
+    /* Provide popup help for the questions */
+	(   function(){
+            let prev = window.onload;
+            window.onload = function(){
+                if(prev) prev();
+                var options = document.querySelectorAll(".options li");
+                var hint = function(){
+                    var pop = document.createElement("div");
+                    pop.style.position="absolute";
+                    pop.innerHTML = "Per selezionare la risposta '<em>" +
+                        this.innerText.replace("<","&lt;").replace(">","&gt;") +
+                        "</em>' è necessario "+
+                        "modificare il documento aggiungendo la classe "+
+                        "'<code>selected</code>' all'elemento" +
+                        "<code>&lt;li&gt;</code> corrispondente:<br>" +
+                        "<code>&lt;li&gt;</code> diventa " +
+                        "<code>&lt;li class=\"selected\"&gt;</code>"
+                    ;
+                    pop.classList.add("popup");
+                    this.appendChild(pop);
+                    this.style.position = "relative";
+                    pop.onmouseout = function(){
+                        if(pop) {
+                            pop.style.setProperty("visibility", "hidden");
+                            pop.parentElement.removeChild(pop);
+                            pop = null;
+                        }
+                    };
+                    setTimeout(pop.onmouseout, 7000);
+                };
+                for(var i=0; i<options.length;++i){
+                    options[i].onclick=hint;
+                }
+        };
+	})()
+</script>
+</html>

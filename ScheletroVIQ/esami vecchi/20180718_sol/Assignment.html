@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 18 Luglio 2018 - Soluzione</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+    <script src="VIQsupport.js"></script>
+    <script src="sbarchi.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 18 Luglio 2018 - Soluzione</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico pubblicato dal ministero dell'interno in un
+	<a href="http://www.interno.gov.it/it/sala-stampa/dati-e-statistiche/sbarchi-e-accoglienza-dei-migranti-tutti-i-dati"
+	>cruscotto statistico</a> relativo a Sbarchi e accoglienza dei migranti, il 10 Luglio 2018.</p>
+
+<img src="Sbarchi.jpg" style="width:80%;margin:auto;">
+
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+
+	<p>L'obiettivo del grafico è piuttosto chiaro ed è sintetizzato bene dal titolo: il confronto del
+	numero di migranti sbarcati in Italia nei diversi mesi degli anni 2016-2018.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<p>In generale i dati supportano bene la domanda con due limitazioni:</p>
+		<ul>
+			<li>i dati di Luglio 2018 sono incompleti (si riferiscono a 10 giorni e non a tutto il mese)
+			perciò non possono essere confrontati direttamente con quelli degli anni precedenti;</li>
+			<li>i dati completi del 2018 si fermano a Giugno perciò non è possibile un confronto
+			completo tra gli anni, al massimo tra i semestri.</li>
+		</ul>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<p>Le barre rappresentano in maniera proporzionale i valori, infatti l'asse <em>y</em> parte correttamente da 0.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	    <p>In generale tutti gli elementi del grafico sono utili.</p>
+        <p>Esiste una apparente doppia legenda: quella microscopica (e praticamente inutile) sulla destra del
+        grafico e quella rappresentata dai numberi di sbarchi nei tre anni riportata sopra il grafico.</p>
+        <p>I numeri riportati sopra le barre potrebbero essere omessi, sebbene siano utili per conoscere
+        i valori esatti che altrimenti l'altezza delle barre non potrebbe trasmettere accuratamente.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<p>Il grafico presenta alcune limitazioni:</p>
+        <ul>
+            <li>innanzi tutto l'uso delle barre focalizza l'attenzione sui singoli valori e non permette
+            un'agevole percezione dell'andamento nel corso degli anni;</li>
+            <li>i numeri riportati sopra le barre sono di difficile lettura in quanto sono occasionalmente
+            e parzialmente sovrapposti alle barre adiacenti;</li>
+            <li>la legenda esplicita (a destra) ha dimensioni assolutamente insufficienti e rappresenta
+            un elemento di disturbo più che di supporto al grafico;</li>
+			<li>la scelta dei colori rosso e verde con luminosità simile e posti l'uno accanto all'altro
+			è pessima per i lettori affetti da cecità al colore che hanno difficoltà a distinguerli.
+            Come è possibile verificare nella seguente
+                <a href="https://www.color-blindness.com/coblis-color-blindness-simulator/">simulazione</a>:
+                <br><img src="SbarchiProtanopia.png">
+            </li>
+            <li>la legenda <em>implicita</em> che è data dalle cifre annuali sopra il grafico è di difficile
+            lettura in quanto i colori vengono usati solo per l'anno e non sono riportati in un quadrato pieno
+            che possa richiamare visivamente le barre;</li>
+            <li>il dato di luglio 2018 viene riportato senza nessuna annotazione che possa mettere in guardia
+                il lettore da una comparazione falsata con gli altri valori;</li>
+            <li>analoga osservazione vale per i totali annuali riportati solamente come numeri sopra il grafico.</li>
+        </ul>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+    <p>Riprogettare la visualizzazione in modo da risolvere i problemi evidenziati nell'analisi.</p>
+    <p>Tutti i dati necessari alla visualizzazione devono essere inseriti in un file dati con formato JSON o CSV.</p>
+
+
+<div class="answer" id="redesign">
+	<p>Soluzione 1: diagramma a linee.</p>
+    <div id="graph"></div>
+
+
+    <p>Soluzione 2: diagramma a linee per semestre</p>
+    <div id="graphSem"></div>
+
+    <p>Soluzione 3: diagramma a linee / slopechart per mese negli anni</p>
+    <div id="graphMese"></div>
+</div>
+
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Cosa si rappresenta bene con un diagramma Treemap?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Una distribuzione numerica di valori reali compresi tra 0 e 1</li>
+			<li>La frequenza di categorie e sottocategorie di elementi di un insieme</li>
+			<li>L'andamento nel tempo di valori numerici</li>
+			<li>L'ordinamento di punteggi assegnati a diversi elementi</li>
+			<li>La correlazione tra due variabili numeriche</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+        Dato l'array di numeri
+        <code>var a = [1,2,3,4,5]</code>
+        come posso calcolare il massimo?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>Math.max(a);</code></li>
+			<li><code>Math.max.apply(a)</code></li>
+			<li><code>Math.max.apply(null,a)</code></li>
+			<li><code>Math.max.call(a)</code></li>
+			<li><code>Math.max.call(null,a)</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+</html>

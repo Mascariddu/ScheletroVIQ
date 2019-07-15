@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Esame 30 Giugno 2016</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+    <script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 30 Giugno 2016</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico preso da
+	un <a href="http://www.emarketer.com/Article/More-Than-Two-Thirds-of-US-Digital-Display-Ad-Spending-Programmatic/1013789
+">post della società eMarketer</a>.</p>
+<p>Il grafico riporta alcune informazioni sulle spese
+	per la pubblicità digitale <em>programmatica</em>.
+	Ovvero a pubblicità che è acquistata in maniera
+	automatica tramite appositi sw.
+</p>
+
+<img src="AdSpending.gif" style="width:40%">
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<p >L'obiettivo generale (implicito) è mostrare come la pubblicità programmatica sia
+        in aumento e come si pone rispetto alla spesa totale.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+        <p>I dati mostrati sono parziali, in particolare:</p>
+        <ul>
+            <li>non compare la spesa totale, ma solo la spesa programmatica
+                e la percentuale che quest'ultima rappresenta rispetto al totale</li>
+            <li>c'è un riferimento ad un incremento del 118% nel 2014 ma non
+                viene mostrato il valore assoluto dell'anno precedente.</li>
+        </ul>
+        <p>I dati sono di aprile 2016 ma sono riportati anche i dati per il 2017,
+        evidentemente si tratta di proiezioni ma questo non è indicato.</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	    <p>Le dimensioni delle barre sono proporzionali.</p>
+        <p>Le linee (sovrapposte alle barre) utilizzano un proprio asse che
+            pare essere omogeneo per entrambe le serie.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	    <p>Tutti gli elementi presenti portano informazioni utili</p>
+        <p>I valori percentuali riportano una cifra decimale che potrebbe essere eliminata.</p>
+        <p>I valori assoluti riportano due cifre decimali che potrebbero essere eliminate.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	    <p>Il doppio asse implicito rende difficile la lettura.</p>
+        <p>I numeri riportati tendono a sovrapporsi e le cifre decimali inutili
+            peggiorano la leggibilità.</p>
+        <p>La linea rossa sembra indicare una tendenza in calo, ma se si osservano
+        le barre la crescita è pressochè costante (in valore assoluto) negli anni,
+        ovviamente la crescita in % è in calo facendo riferimento a denominatori
+        via via più grandi negli anni.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<p>In particolare evidenziare come le spese in 
+   pubblicità digitale <em>programmatica</em>
+   si confrontano con le spese totali
+   in pubblicità digitale, nel corso degli ultimi anni.</p>
+<div class="answer" id="redesign">
+	<script>
+        function disegna(errore, data) {
+            if (errore) {
+                document.getElementById("graficoBarre").innerHTML = "Errore nel caricamento dei dati";
+                return;
+            }
+
+            var anno = [];
+            var spesa = [];
+            var percentuale = [];
+            var totale = [];
+            var nonprog = [];
+            var label = [];
+            var labeltotale = [];
+            var labelnonprog = [];
+
+            for (var i = 0; i < data.length; i++) {
+                anno.push(data[i].Anno);
+                spesa.push(+data[i].Spesa);
+                percentuale.push(+data[i].Percentuale);
+                label.push(spesa[i].toFixed(2) + " billion$");
+            }
+
+            for (var i = 0; i < spesa.length; i++) {
+                tot = ((spesa[i] / percentuale[i]) * 100).toFixed(2);
+                totale.push(tot);
+                labeltotale.push(totale[i] + " billion$");
+                nonprog.push(tot-spesa[i]);
+                labelnonprog.push((tot-spesa[i]).toFixed(2) + " billion$");
+            }
+
+            var traces = [
+                {
+                    name: "Programmatic Digital<br />Display Ad Spending",
+                    x: anno,
+                    y: spesa,
+                    type: "bar",
+                    text: label,
+                    hoverinfo: "text",
+                    marker:{color: ["dodgerblue","dodgerblue","dodgerblue","azure"],
+                           line:{width:1,color:"dodgerblue"}}
+                },
+                {
+                    name: "Total Digital Display<br />Ad Spending",
+                    x: anno,
+                    y: totale,
+                    type: "bar",
+                    text: labeltotale,
+                    hoverinfo: "text",
+                    marker:{color: ["orange","orange","orange","seashell"],
+                           line:{width:1,color:"orange",}}
+                }];
+
+            var layout = {
+                title: "Digital Display Ad Spending",
+                xaxis: {title: "Year"},
+                yaxis: {title: "Spending [billions]", tickprefix: "$"},
+                annotations : [
+                {x:2017, y:40, text:"Estimates"}
+                ]
+            };
+
+            Plotly.plot("graficoBarre", traces, layout, {displayModeBar:false});
+
+            var tracesL = [
+                {
+                    name: "Programmatic Spending",
+                    x: anno.map(function(a){ return "Anno "+a; }),
+                    y: spesa,
+                    type: "scatter",
+                    text: label,
+                    hoverinfo: "text"
+                },
+                {
+                    name: "Total Spending",
+                    x: anno.map(function(a){ return "Anno "+a; }),
+                    y: totale,
+                    type: "scatter",
+                    text: labeltotale,
+                    hoverinfo: "text"
+                },
+                {
+                    name: "Non Programmatic Spending",
+                    x: anno.map(function(a){ return "Anno "+a; }),
+                    y: nonprog,
+                    type: "scatter",
+                    text: labelnonprog,
+                    hoverinfo: "text"
+                }];
+
+            var layoutL = {
+                title: "Digital Display Ad Spending",
+                xaxis: {title: "Year"},
+                yaxis: {title: "Spending [billions]", tickprefix: "$"},
+                annotations : [
+                    {x:"Anno 2017", y:39, text:"Estimates"},
+                    {x:"Anno 2017", y:28, text:"Estimates"},
+                    {x:"Anno 2017", y:11, text:"Estimates"}
+                ]
+            };
+
+            Plotly.plot("graficoLinee", tracesL, layoutL, {displayModeBar:false});
+            
+        }
+
+        window.onload = function () {
+            Plotly.d3.csv("AdSpendingData.csv", disegna);
+        };
+	</script>
+    <p>Una prima soluzione è basata su un diagramma a barre che riporta i valori
+    di spesa programmatica e non.</p>
+	<div id="graficoBarre"></div>
+    
+    <p>Una seconda soluzione è basata su un diagramma a linee che riporta i valori
+    di spesa programmatica e non.</p>
+    <div id="graficoLinee"></div>
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Considerando la serie di valori
+	1,	3,	5,	7,	3; quale misura
+	varia meno aggiungendo come
+	ulteriore valore 25? 
+	</div>
+	<div class="options">
+		<ul>
+			<li>Massimo</li>
+			<li>Media</li>
+			<li>Mediana</li>
+			<li>Mid-value</li>
+			<li class="selected">Moda</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+	Quale elemento <strong>non</strong> ha senso
+	annidare all'interno di un <code>&lt;p&gt;</code>?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>&lt;strong&gt;</code></li>
+			<li><code>&lt;em&gt;</code></li>
+			<li><code>&lt;code&gt;</code></li>
+			<li class="selected"><code>&lt;div&gt;</code></li>
+			<li><code>&lt;span&gt;</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+<script>
+(function(){
+var options = document.querySelectorAll(".options li");
+var hint = function(){
+	var pop = document.createElement("div");
+	pop.style.position="absolute";
+	pop.innerHTML = "Per selezionare la risposta '<em>" +
+			this.innerText.replace("<","&lt;").replace(">","&gt;") + 
+			"</em>' è necessario "+
+		  "modificare il documento aggiungendo la classe "+
+		  "'<code>selected</code>' all'elemento" +
+		  "<code>&lt;li&gt;</code> corrispondente:<br>" +
+		  "<code>&lt;li&gt;</code> diventa " +
+		  "<code>&lt;li class=\"selected\"&gt;</code>";
+	pop.classList.add("popup");
+	this.appendChild(pop);
+	this.style.position = "relative";
+	setTimeout(function () {
+  		pop.style.setProperty("visibility","hidden");
+  		pop.parentElement.removeChild(pop);
+	}, 3000);
+};
+for(var i=0; i<options.length;++i){
+	options[i].onclick=hint;
+}
+})();
+</script>
+</html>

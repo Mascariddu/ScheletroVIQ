@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Esame 14 Luglio 2016</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 14 Luglio 2016</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico preso dal
+	 <a href="http://wppbaz.com/article/1403"
+	 >2016 BrandZ™ Top 100 Most Valuable Global Brands Report</a>.</p>
+<p>Il grafico riporta alcune informazioni sulla variazione
+	di valore dei migliori <em>Brand</em> globali
+	per diverse categorie tra 2015 e 2016.
+</p>
+
+<img src="BrandZ.jpg" style="width:70%;margin-left:15%;">
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<p>L'obiettivo del grafico è evidenziare la variazione di valore di alcune categorie di brand dal 2016 al 2016.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<p>I dati mostrati sono limitati e rispondono completamente alla domanda; in particolare:</p>
+		<ul>
+			<li>I valori assoluti di valore si riferiscono ai migliori 10 marchi (<em>top 10 brands</em>)
+				e non al valore complessivo della categoria. Ma con due eccezioni:
+			<ul>
+                <li>Per <em>Retail</em> e <em>technology</em> si considerano i miglioro 20</li>
+				<li>Per <em>Personal care</em> e <em>Soft drinks</em> si considerano i migliori 15</li>
+			</ul>
+				Questo porta ad avere valori non direttamente confrontabili.
+			</li>
+			<li>Invece la variazione, presumibilmente, si riferisce alla variazione di tutti i marchi della categoria
+				e non solamente dei migliori 10.</li>
+		</ul>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	    <p>I valori di variazione percentuali non sono riportati con una proporzione uniforme nella dimensione delle bolle.
+            Esiste un valore 0 che teoricamente dovrebbe corrispondere ad una dimensione nulla.</p>
+        <p>I valori negativi sono rappresentanti come più piccoli, senza una chiara proporzionalità o regola di codifica.</p>
+        <p>Potenzialmente la posizione dei centri delle bolle rispetto alla base del grafico potrebbe rappresentare il
+            valore, tuttavia questo non è esplicitato.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+        <p>Ci sono diversi elementi puramente decorativi che distraggono dal messaggio quantitativo:
+            lo sfondo a righe, i riflessi stilizzati sulle bolle (lecca-lecca) i bastoncini che sorreggono le bolle,
+            la striscia effetto legno alla base del grafico.
+        </p>
+        <p>Il cartello con l'informazion su quanti salgono/scendono o sono stabili dovrebbe essere desumibile
+        dal grafico ed è sostanzialemnte ridondante.</p>
+        <p>La dimensione variabile dei caratteri con le percentuali è poco utile a trasmettere i valori relativi.</p>
+
+    </div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	    <p>La legenda sui valori riporta le due misure invertite: in alto menziona il valore assoluto in $ che si trova in basso
+            mentre in basso menziona la % di variazione che si trova in alto.</p>
+        <p>Le percentuali negative sono riportate con una dimensione di carattere molto piccola </p>
+        <p>Nell'ipotesi che la posizione delle bolle rappresenti i valori di variazione,
+            manca un eventuale asse verticale ed una linea corrispondente allo zero.
+            Inoltre l'etichetta con il valore assoluto, riportate sul tratto verticale potrebbe
+            suggerire che l'altezza rappresenti invece tale valore (ma così non è).</p>
+
+    </div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<p>In particolare evidenziare la variazione di valore
+	e il valore tipico di un brand nelle diverse categorie.</p>
+<div class="answer" id="redesign">
+	<script>
+        function verticalAnnotations(levels,pos,width){
+            var annotations = [];
+            width = width || 15;
+            pos = pos || 0.5;
+            for(var i=0; i<levels.length; ++i){
+                annotations.push({
+                    xref:'paper',
+                    xanchor:'center',
+                    x: pos,
+                    y: levels[i],
+                    text: levels[i],
+                    showarrow: false
+                });
+            }
+            return annotations;
+        }
+        function visualizzaBarre(dati,sort){
+            // ordina i dati
+            dati.sort(function(a,b){
+                return a[sort] - b[sort];
+            });
+
+            // costruisce gli array di dati
+            var settore = [];
+            var perc = [];
+            var valore = [];
+
+            for (var i = 0; i < dati.length; ++i) {
+                settore.push(dati[i].Settore);
+                perc.push(dati[i].Percentuale);
+                valore.push(dati[i].Valore);
+            }
+
+            var tracce = [{
+                name: "Variazione",
+                y: settore,
+                x: perc,
+                marker : {color: perc.map(function(val){return (val<0?"red":"dodgerblue");}) },
+                type: 'bar',
+                orientation: 'h',
+                hoverinfo: 'x' // mostra solo il dato perc
+            }, {
+                name: "Valore",
+                y: settore,
+                x: valore,
+                type: 'bar',
+                orientation: 'h',
+                xaxis: 'x2', // secondo asse
+                hoverinfo: 'x' // mostra solo il dato valore
+            }];
+            var layout = {
+                height: 500,
+                xaxis: {
+                    title: 'Variazione',
+                    domain: [0, 0.44],
+                    //autorange: 'reversed',
+                    ticksuffix: "%",
+                    showticksuffix: "all"
+                },
+                xaxis2: {
+                    title: 'Valore',
+                    domain: [0.57, 1.0],
+                    ticksuffix: " G$",
+                    showticksuffix: "all"
+                },
+                yaxis: {
+                    position: 0.6,
+                    showticklabels: false // nasconde le etichette
+                },
+                annotations: verticalAnnotations(settore),
+                showlegend: false,
+                hovermode: "y",
+                margin: {
+                    l: 40, r: 40, t: 10, b: 40
+                }
+            };
+            var g = document.getElementById('bar');
+            g.innerHTML = "";
+            Plotly.newPlot(g,tracce,layout,{displayModeBar:false});
+        }
+
+        function visualizzaTreBarre(dati,sort){
+            // ordina i dati
+            dati.sort(function(a,b){
+                return a[sort] - b[sort];
+            });
+
+            // costruisce gli array di dati
+            var settore = [];
+            var perc = [];
+            var valore = [];
+            var delta = [];
+
+            for (var i = 0; i < dati.length; ++i) {
+                settore.push(dati[i].Settore);
+                perc.push(dati[i].Percentuale);
+                valore.push(dati[i].Valore);
+                delta.push(dati[i].Delta);
+            }
+
+            var tracce = [{
+                name: "Variazione %",
+                y: settore,
+                x: perc,
+                marker : {color: perc.map(function(val){return (val<0?"red":"dodgerblue");}) },
+                type: 'bar',
+                orientation: 'h',
+                hoverinfo: 'x' // mostra solo il dato perc
+            }, {
+                name: "Valore",
+                y: settore,
+                x: valore,
+                type: 'bar',
+                orientation: 'h',
+                xaxis: 'x2', // secondo asse
+                hoverinfo: 'x' // mostra solo il dato valore
+            },{
+                name: "Variazione assoluta",
+                y: settore,
+                x: delta,
+                marker : {color: delta.map(function(val){return (val<0?"red":"dodgerblue");}) },
+                type: 'bar',
+                orientation: 'h',
+                xaxis: 'x3', // secondo asse
+                hoverinfo: 'x' // mostra solo il dato valore
+            }];
+            var layout = {
+                height: 500,
+                xaxis: {
+                    title: 'Variazione %',
+                    domain: [0, 0.25],
+                    //autorange: 'reversed',
+                    ticksuffix: "%",
+                    showticksuffix: "all"
+                },
+                xaxis2: {
+                    title: 'Valore',
+                    domain: [0.40, 0.65],
+                    ticksuffix: " G$",
+                    showticksuffix: "all"
+                },
+                xaxis3: {
+                    title: 'Variazione assoluta',
+                    domain: [0.75, 1.0],
+                    ticksuffix: " G$",
+                    showticksuffix: "all"
+                },
+                yaxis: {
+                    position: 0.6,
+                    showticklabels: false // nasconde le etichette
+                },
+                annotations: verticalAnnotations(settore,0.33),
+                showlegend: false,
+                hovermode: "y",
+                margin: {
+                    l: 40, r: 40, t: 10, b: 40
+                }
+            };
+            var g = document.getElementById('bar3');
+            g.innerHTML = "";
+            Plotly.newPlot(g,tracce,layout,{displayModeBar:false});
+        }
+
+         window.onload = function(){
+            Plotly.d3.csv("BrandsData.csv",function(error,dati){
+                if(error){
+                    console.log("Impossibile caricare i dati: " + error);
+                    alert("Impossibile caricare i dati");
+                    return;
+                }
+
+                // Aggiunge una colonna con la variazione assoluta
+                // derivata dalle colonne già esistenti
+                dati.forEach(function(row){
+                    row.Delta = row.Valore/(1+100/row.Percentuale);
+                });
+
+
+                // disegna il grafico con due barchart
+                visualizzaBarre(dati,"Percentuale");
+                // aggiunge gli eventi per i radio button di ordinamento
+                var radios = document.getElementsByName('sort');
+                var change = function(){
+                    var sort = this.value;
+                    console.log(sort);
+                    visualizzaBarre(dati,sort);
+                };
+                for(var i=0; i<radios.length; ++i){
+                    radios[i].onchange = change;
+                }
+
+
+                // disegna il grafico con tre barchart
+                visualizzaTreBarre(dati,"Percentuale");
+                // aggiunge gli eventi per i radio button di ordinamento
+                var radios3 = document.getElementsByName('sort3');
+                var change3 = function(){
+                    visualizzaTreBarre(dati,this.value);
+                };
+                for(var i=0; i<radios3.length; ++i){
+                    radios3[i].onchange = change3;
+                }
+            });
+        };
+	</script>
+
+	<p>Una prima soluzione consite in una coppia di diagrammi
+		a barre affiancati.</p>
+    <p>I dati devono essere mostrati ordinati secondo un criterio significativo.
+        Una possibile aggiunta è quella di permettere di selezionare diversi criteri di ordinamento.</p>
+	<form style="text-align:center;">
+	<span style="margin:10%">
+		Incremento/decremento rispetto al 2015: <input type="radio" name="sort" value="Percentuale" checked>
+	</span>
+		<span style="margin:10%">
+		Valore assoluto medio 2016: <input type="radio" name="sort" value="Valore">
+	</span>
+	</form>
+	<div id="bar">Caricamento dati...</div>
+
+
+    <p>Una seconda soluzione consite in tre diagrammi a barre affiancati che riportano
+        anche la variazione in valore assoluto. Anche qui è necessario ordinare significativamente i dati.</p>
+    <form style="text-align:center;">
+	    <span style="margin:5%">
+		    % Variazione rispetto al 2015: <input type="radio" name="sort3" value="Percentuale" checked>
+	    </span>
+        <span style="margin:5%">
+		    Valore assoluto medio 2016: <input type="radio" name="sort3" value="Valore">
+	    </span>
+        <span style="margin:5%">
+		    Variazione assoluta rispetto al 2015: <input type="radio" name="sort3" value="Delta">
+	    </span>
+    </form>
+    <div id="bar3">Caricamento dati...</div>
+
+
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Quali tra questi attributi pre-attentivi
+	permette di codificare al meglio
+	una variabile di tipo ordinale? 
+	</div>
+	<div class="options">
+		<ul>
+			<li>Forma</li>
+			<li class="selected">Intensità</li>
+			<li>Orientamento</li>
+			<li>Saturazione</li>
+			<li>Tinta</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+	Quale selettore permette di modificare
+	le proprietà di un elemento <code>&lt;h1&gt;</code>
+	quando il cursore passa sopra di esso?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>h1 :hover</code></li>
+			<li class="selected"><code>h1:hover</code></li>
+			<li><code>h1:onhover</code></li>
+			<li><code>h1+:hover</code></li>
+			<li><code>h1>:hover</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+<script>
+(function(){
+var options = document.querySelectorAll(".options li");
+var hint = function(){
+	var pop = document.createElement("div");
+	pop.style.position="absolute";
+	pop.innerHTML = "Per selezionare la risposta '<em>" +
+			this.innerText.replace("<","&lt;").replace(">","&gt;") + 
+			"</em>' è necessario "+
+		  "modificare il documento aggiungendo la classe "+
+		  "'<code>selected</code>' all'elemento" +
+		  "<code>&lt;li&gt;</code> corrispondente:<br>" +
+		  "<code>&lt;li&gt;</code> diventa " +
+		  "<code>&lt;li class=\"selected\"&gt;</code>";
+	pop.classList.add("popup");
+	this.appendChild(pop);
+	this.style.position = "relative";
+	setTimeout(function () {
+  		pop.style.setProperty("visibility","hidden");
+  		pop.parentElement.removeChild(pop);
+	}, 3000);
+};
+for(var i=0; i<options.length;++i){
+	options[i].onclick=hint;
+}
+})();
+</script>
+</html>

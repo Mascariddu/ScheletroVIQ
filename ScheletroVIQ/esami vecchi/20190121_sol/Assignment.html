@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 21 Gennaio 2019</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+    <script src="VIQsupport.js"></script>
+	<meta charset="utf-8">
+    <style>
+        q {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 21 Gennaio 2019</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico pubblicato dal
+	<a href="https://www.corriere.it/economia/18_ottobre_02/sei-laureato-guadagni-piu-ingegneri-testa-classifica-1e14b05a-c603-11e8-9c9d-1a34fa855d35.shtml"
+	>Corriere della Sera</a> in un articolo dal titolo <strong>Laurea, la classifica di chi guadagna di più al primo impiego</strong></p>
+
+<img src="RetribuzioneLaureeCorriere.jpg" style="width:60%;margin:auto;">
+
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+
+	<p>L'obiettivo del grafico è mostrare il reddito percepito come prima occupazione dai
+	    laureati in diverse discipline.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+
+	<p>I dati sono generalmente adatti all'obiettivo del grafico. Con alcune limitazioni:</p>
+		<ul>
+			<li>Mentre sono riportate le medie della laurea triennale e magistrale in generale,
+				le singole discipline riportano un valore unico, che non si capisce se si riferisca
+			    ad entrambi i livelli o solo ad uno. Nel primo caso essendoci un significativa
+			    differenza tra i due livelli in generale (13%) l'aggregazione è poco sensata.</li>
+			<li>Oltre alle differenza tra i livelli esistono, verosimilmente, delle differenze
+				all'interno delle diverse discipline, questi dati (o incertezza) non sono mostrati.</li>
+			<li>Non è chiara la differenza tra lauree "Umanistiche" e "Letterarie".</li>
+			<li>Non sono note le consistenze numeriche dei lavoratori con titolo di primo
+				e secondo livello anche se dalle medie apparentemente il numero di laureati
+                magistrali lavoratori è 2.5 volte quello dei laureati triennali.</li>
+		</ul>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<p >Il diagramma a barre non parte dallo zero, questo rappresenta un serio problema di proporzionalità.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	    <p>I colori della barre, salvo la distinzione tra discipline (azzurro) e livelli (rosso)
+		    codificano un'informazione che è già codificata dalla posizione e dall'etichetta sottostante.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+        <p>Le etichette relative ai livelli ed alle discipline sono riportate inclinate di 45°, cosa che le
+            rende difficili da leggere.</p>
+        <p>Il fatto che la linea tratteggiata rossa ed il valore su sfondo rosso rappresentino la media
+            è una congettura, ragionevole ma non supportata da elementi concreti.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+    <p>Riprogettare la visualizzazione in modo da risolvere i problemi evidenziati nell'analisi.</p>
+
+<div class="answer" id="redesign">
+    <p>Soluzione1: uso di barplot orizzontale</p>
+	<div id="bars" style="width:700px;height:300px;"></div>
+    <p>Soluzione2: uso di dotplot orizzontale</p>
+    <div id="dots" style="width:700px;height:300px;"></div>
+    <script>
+        window.onload = function () {
+
+            Plotly.d3.csv("retribuzioni.csv",function (error,data) {
+
+                // Barre
+
+                let livelliColori = ["orange","purple","olive"];
+
+                let categorie = [];
+                let retribuzioni = [];
+                let colori = [];
+                let tipologie = [];
+                for(let i=0; i<data.length; ++i){
+                    categorie.push(data[i].Categoria);
+                    retribuzioni.push(data[i].Retribuzione);
+                    let tipo = data[i].Tipo;
+                    let nc = tipologie.indexOf(tipo);
+                    if(nc<0){
+                        nc = tipologie.length;
+                        tipologie.push(tipo);
+                    }
+                    colori.push(livelliColori[nc]);
+                }
+
+                let traces = [{
+                    y: categorie,
+                    x: retribuzioni,
+                    orientation: "h", // default: "v"
+                    type: "bar",
+                    marker: {
+                        color: colori
+                    }
+                }];
+
+                let layout = {
+                    margin: {
+                        t: 1,
+                        l: 200, r: 2,
+                        b: 60
+                    },
+                    xaxis : {
+                        title : "Retribuzione",
+                        ticksuffix:" €"
+                    }
+                };
+
+                Plotly.plot("bars", traces, layout);
+
+
+                // Dot plot
+
+
+                let discipline = [];
+                let retribuzioniDiscipline = [];
+                let media = NaN;
+                let livelli = [];
+                let retribuzioniLivelli = [];
+
+                for(let i=0; i<data.length; ++i){
+                    let tipo = data[i].Tipo;
+                    if(tipo == "Disciplina") {
+                        discipline.push(data[i].Categoria);
+                        retribuzioniDiscipline.push(data[i].Retribuzione);
+                    }
+                    else if(tipo === "Livello"){
+                        livelli.push(data[i].Categoria);
+                        retribuzioniLivelli.push(+data[i].Retribuzione);
+                    }
+                    else if(tipo === "Media"){
+                        media = +data[i].Retribuzione;
+                    }
+                }
+
+                traces = [{
+                    name: "Discipline",
+                    y: discipline,
+                    x: retribuzioniDiscipline,
+                    orientation: "h", // default: "v"
+                    type: "scatter",
+                    mode: "markers",
+                    marker: {
+                        color: "olive",
+                        size: 10
+                    }
+                }];
+                let reference = function(l,v,col){
+                    return {
+                        name: l,
+                        y:discipline,
+                        x:discipline.slice(0).fill(v),
+                        text:discipline.slice(0).fill(""),
+                        orientation:"h",
+                        type:"scatter",
+                        mode:"lines",
+                        line : {
+                            color: col
+                        }
+                    };
+                };
+
+                traces.push(reference("Media",media,"purple"));
+                livelli.forEach( (l,i) => traces.push(reference(l,retribuzioniLivelli[i],["gold","darkorange"][i])));
+
+                Plotly.plot("dots", traces, layout);
+
+
+            });
+        }
+    </script>
+</div>
+
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	A quale tipo di scala si riferisce la tempistica di rilascio di un software?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Nominale</li>
+			<li>Ordinale</li>
+			<li>Intervallo</li>
+			<li>Rapporto</li>
+			<li>Assoluta</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+        Quale selettore serve per poter applicare un dato stile agli elementi con posizione multipla di 5 delle liste puntate?
+	</div>
+	<div class="options">
+		<ul>
+            <li><code>ol li:nth-child(4n+1)</code></li>
+            <li><code>ol li:nth-child(5)</code></li>
+            <li><code>ol li:nth-child(5n)</code></li>
+            <li><code>ul li:nth-child(5)</code></li>
+            <li><code>ul li:nth-child(5n)</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+</html>

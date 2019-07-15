@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Esame 9 Giugno 2016</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<meta charset="utf-8">
+    <script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+    <script src="utility.js"></script>
+	<script async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 9 Giugno 2016</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico preso da
+	un <a href="http://www.nytimes.com/2014/09/14/magazine/who-made-that-windshield-wiper.html?_r=0"
+		>articolo del NYT (del 12 Settembre 2014)</a>.</p>
+<p>Il grafico riporta il numero di <em title="patent">brevetti</em>
+	rilasciati in diversi periodi relativamente ai
+	tergicristalli.
+</p>
+
+<img src="Wiper.png" style="width:40%">
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<p>
+	Il grafico risponde alla domanda: qual è l'evoluzione
+	del numero di brevetti legati ai tergicristalli negli anni?
+	</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<p>I dati presentano due problemi:</p>
+	<ul>
+		<li>il sotto-titolo parla di decadi ma l'intervallo
+			tra il primo valore (riferito a <em>1920s</em>)
+			ed il secondo (riferito a <em>1940s</em>)
+			apparentemente è di 20 anni;</li>
+		<li>l'ultimo periodo è pari a quasi 5 anni, dal 2010
+			a Settembre 2014.</li>
+	</ul>
+	<p>Sono possibili due interpretazioni relativamente
+		al primo problema:</p>
+	<ul>
+		<li>Ci sono alcune decadi mancanti (1930, 1950, 1970, 1990)</li>
+		<li>I dati si riferiscono a intervalli non uniformi:
+			20 anni per i primi quattro valori, 10 anni
+			per il quinto e circa 5 anni per l'ultimo.</li>
+	</ul>
+	<p>In ogni caso i dati non sono direttamente confrontabili.</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<p>Il grafico riporta due misure:</p>
+	<ul>
+		<li>Il numero di brevetti: che è rappresentanto solo in
+			maniera testuale e non da alcun attributo visivo.</li>
+		<li>Il periodo di riferimento, riportato sulla curva
+			del quarto di cerchio, in maniera assolutamente
+			non proporzionale.</li>
+	</ul>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	<p>Il quarto di cerchio azzurro non svolge alcun ruolo,
+		inoltre i cerchi che racchiudono i numeri di brevetti
+		non hanno una specifica utilità, potrebbero essere omessi.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<p>I dati sono leggibili e chiaramente collegati ai periodi.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<p>In particolare evidenziare come varia il numero di brevetti
+	nel tempo.</p>
+<div class="answer" id="redesign">
+
+<script>
+
+addOnload(function(){
+	Plotly.d3.csv("dati.csv",function(error,dati){
+		if(error){
+			console.log("Impossibile caricare i dati: " + error);
+			return;
+		}
+	
+	var x=[];
+	var y=[];
+	var xe=[];
+	var ye=[];
+	var lbl = [];
+	var lble = [];
+	for(var i=0; i<dati.length; ++i){
+		if(i<dati.length-1){
+			x.push( +dati[i].Inizio );
+			y.push( +dati[i].Brevetti );
+			lbl.push( dati[i].Inizio + "s: " + dati[i].Brevetti );
+		}
+
+		if(i>=dati.length-2){
+			var b = +dati[i].Brevetti;
+			var txt = null;
+			if(i==dati.length-1){
+				b = b * 10/(4+9/12);
+				txt = dati[i].Inizio + "s: " + b.toFixed(1) + " (stima)";
+			}
+			xe.push( +dati[i].Inizio );
+			ye.push( b );
+			lble.push( txt );
+		}
+	}
+	
+	var tracce = [{
+		name: "Brevetti",
+		x: x,
+		y: y,
+		text : lbl,
+		type: "scatter",
+		line: {
+			shape: "spline",
+			dash: 4,
+			width: 1,
+		},
+		hoverinfo : "text",
+	},{
+		name: "Brevetti (stima)",
+		x: xe,
+		y: ye,
+		text : lble,
+		hoverinfo : "text",
+		type: "scatter",
+		line: {
+			shape: "line",
+			dash: 1,
+			width: 1,
+		},
+		marker: {
+			color: ["transparent	","orange"],	
+		},
+	}];
+	
+	var layout = {
+		title: "Numero di brevetti relativi a tergicristalli",
+		xaxis:{
+			title: "Decadi",
+			ticksuffix:"s"
+		},
+		yaxis:{
+			title: "Brevetti per decade",
+		}
+	};
+		
+	var g = document.getElementById("grafico1");
+	g.innerHTML = "";
+	Plotly.newPlot(g,tracce,layout,{displayModeBar:false,});
+
+	});
+});
+</script>	
+<p>
+Nell'ipotesi 1 (dati riferiti decadi) è opportuno
+trattare in maniera adeguata l'ultimo periodo 
+che di fatto è una mezza decade. 
+</p>
+<p>Una possibilità
+è quella di rapportare l'ultimo valore (390) al
+periodo relativo: dal 2010 a settembre 2015 (la
+data dell'articolo), ovvero 4 anni e 9 mesi.
+</p><p>
+Il calcolo del valore stimato può essere svolto come:
+</p>
+$$ N_{norm} = N \cdot \frac{10}{4 + \frac{9}{12}} $$ 
+<div id="grafico1">..</div>
+
+
+<script>
+
+addOnload( function(){
+	Plotly.d3.csv("20160609dati.csv",function(error,dati){
+		if(error){
+			console.log("Impossibile caricare i dati: " + error);
+			return;
+		}
+	
+	var x=[];
+	var y=[];
+	var lbl = [];
+	for(var i=0; i<dati.length; ++i){
+		x.push( +dati[i].Inizio );
+		var avg = +dati[i].Brevetti / (dati[i].Fine-dati[i].Inizio+1);
+		y.push( avg );
+		lbl.push( dati[i].Inizio + " - " + dati[i].Fine + ":<br>" +
+			  avg + " brevetti per anno<br>" +
+			  "(" + dati[i].Brevetti + " totali)" 
+			  );
+	}
+	var last = dati.length-1;
+	x.push( +dati[last].Fine );
+	y.push( +dati[last].Brevetti / (dati[last].Fine-dati[last].Inizio+1) );
+	var tracce = [{
+		name: "Brevetti",
+		x: x,
+		y: y,
+		text : lbl,
+		type: "scatter",
+		line: {
+			shape: "hv",
+			width: 2,
+		},
+		marker :{
+			size: 1,	
+		},
+		hoverinfo: "text",
+	}];
+	
+	var layout = {
+		title: "Numero di brevetti relativi a tergicristalli",
+		xaxis:{
+			title: "Anni",
+		},
+		yaxis:{
+			title: "Brevetti per anno (media)",
+		}
+	};
+		
+	var g = document.getElementById("grafico2");
+	g.innerHTML = "";
+	Plotly.newPlot(g,tracce,layout,{displayModeBar:false,});
+
+	});
+});
+</script>	
+<hr>
+<p>
+Nell'ipotesi 2 (dati riferiti a intervalli non uniformi)
+per poter rendere i dati confrontabili
+una soluzione è quella di riportare le medie annuali.
+</p>
+$$ \overline{N} = \frac{N}{Anno_{fine} - Anno_{inizio} + 1} $$
+<div id="grafico2">..</div>
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Quale property permette di
+	impostare il colore del testo
+	a rosso?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>color: purple;</code></li>
+			<li><code>background-color: red;</code></li>
+			<li><code>font-color: rgb(255,0,0)</code></li>
+			<li class="selected"><code>color: rgb(255,0,0);</code></li>
+			<li><code>text-color: red;</code></li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+	La posizione di una frase all'interno
+	di un libro è una misura di tipo:
+	</div>
+	<div class="options">
+		<ul>
+			<li>Nominale</li>
+			<li>Ordinale</li>
+			<li class="selected">Intervallo</li>
+			<li>Rapporto</li>
+			<li>Assoluta</li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+<script>
+(function(){
+var options = document.querySelectorAll(".options li");
+var hint = function(){
+	alert("Per selezionare la risposta '" +
+			this.innerText + 
+			"' è necessario "+
+		  "modificare il documento aggiungendo la classe "+
+		  "'selected' all'elemento <li> corrispondente."
+);
+};
+for(var i=0; i<options.length;++i){
+	options[i].onclick=hint;
+}
+})();
+</script>
+</html>

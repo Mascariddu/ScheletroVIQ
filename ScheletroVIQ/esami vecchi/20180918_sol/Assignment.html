@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 18 Settembre 2018</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+    <script src="VIQsupport.js"></script>
+	<script src="sondaggi.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 18 Settembre 2018</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico pubblicato dal
+	<a href="https://www.corriere.it/politica/18_luglio_23/tra-lega-5-stelle-testa-testapd-giu-dell-19percento-centrodestra-417-9ebca61c-8de7-11e8-8382-fa27f64b6a47.shtml"
+	>Corriere della Serao</a> relativo alle intenzioni di voto degli italiani.</p>
+	<p>Sopra il grafico è riportato il titolo <strong>Testa a testa tra Lega e M5S. Pd perde l’1,9%</strong></p>
+
+<img src="Sondaggi.jpg" style="width:60%;margin:auto;">
+
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>L'obiettivo della visualizzazione è relativamente chiaro:
+		mostrare l'evoluzione nel tempo delle preferenze,
+	in particolare confrontando l'ultimo dato (del 19/7) con quello delle elezioni.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>I dati sono generalmente validi.
+		La somma delle preferenze per i diversi partiti o liste somma correttamente a 100.
+	</p>
+		<p>
+			Un problema significativo è è che il tasso di astensione (ultima colonna)
+			<strong>non</strong> è confrontabile con le altre percentuali:
+			<ul>
+				<li>il dato di astensione (<em>A</em>) si riferisce all'intera popolazione totale (<em>T</em>)</li>
+				<li>gli altri dati (<em>P<sub>i</sub></em>) si riferiscono a chi ha indicato una
+				    preferenza, ovvero alla popolazione totale meno gli astenuti (<em>T - A</em>)</li>
+			</ul>
+		</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>Il problema principlae è data dalla difficoltà percettiva di confrontare le aree
+	   che rappresentano i dati.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p >La griglia di fondo, pare serva a raggruppare le liste ma di fatto ostacola la lettura.
+	    Inutile anche il riquadro con linea più spessa ad evidenziare l'ultima rilevazione.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>La griglia complica la lettura globale del diagramma ostacolando lo scorrimento orizzontale e verticale
+	dello sguardo. Inoltre essendo <em>sopra</em> i dati ne ostacola la lettura.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+    <p>Riprogettare la visualizzazione in modo da risolvere i problemi evidenziati nell'analisi.</p>
+    <p>Tutti i dati necessari alla visualizzazione devono essere inseriti in un file dati con formato JSON o CSV.</p>
+
+
+<div class="answer" id="redesign">
+	<!-- sostituire il <p> </p> seguente con un <div></div>
+		contenente il re-design --> 
+	<p >Soluzione con un diagramma a linee e punti.
+		I dati sono stati riparametrizzati a percentuali della popolazione, quindi confrontabili con gli astenuti.</p>
+
+	<div id="graph"></div>
+
+
+    <p >Soluzione con un diagramma a linee e punti.
+        I dati sono matenuti tali e quali ma gli astenuti sono riportati su una scala separata.</p>
+
+    <div id="graph1"></div>
+</div>
+
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	A quale tipo di scala si riferisce la tipica misura di popolarità di un account su un social network: i follower?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Nominale</li>
+			<li>Ordinale</li>
+			<li>Intervallo</li>
+			<li>Rapporto</li>
+			<li>Assoluta</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+        Quale selettore serve per poter applicare uno stile al terzo elemento delle liste numerate?
+	</div>
+	<div class="options">
+		<ul>
+            <li><code>ol li:nth-child(2n+1)</code></li>
+            <li><code>ol li:nth-child(3)</code></li>
+            <li><code>ol li:nth-child(3n)</code></li>
+            <li><code>ul li:nth-child(3)</code></li>
+            <li><code>ul li:nth-child(3n)</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+</html>

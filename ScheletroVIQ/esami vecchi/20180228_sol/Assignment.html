@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 28 Febbraio 2018</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 28 Febbraio 2018</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico che riporta l'audience dei social media in Italia.</p>
+    <p>Il grafico compare in un <a href="http://www.datamediahub.it/2017/10/24/laudience-dei-social-italia"
+	>post di <em>Data Media Hub</em></a> del 24 Ottobre 2017</p>
+
+<img src="Audience-dei-Social-In-Italia.jpg" style="width:50%;margin-left:15%;">
+
+	Nota: l'audience viene misurata in milioni di persone raggiunte da un determinato medium.
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+
+	<p>La domanda è riportata in maniera incompleta: apparentemente dal titolo la domanda è
+		"<em>Qual'è l'audience dei diversi social media.</em>".
+	Di fatto esiste una seconda domanda che è: "<em>Come si è evoluta l'audience dei diversi social media?</em>";
+	questa seconda domanda appare guardando attentamente la legenda sotto il grafico che codifica, con diversi
+	colori, sei date da Gennaio 2014 a Giugno 2017.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+		<p>I dati riportano la diffusione dei social media, si tratta di valori assoluti che possono essere confrontati
+            direttamente. Tuttavia non esiste un totale di riferimento (ad es. il numero di persone che usano
+            internet in generale) con cui confrontarli. L'unico confronto possibile sarebbe con la popolazione italiana,
+            tuttavia sarebbe poco significativo.
+			</p>
+		<p>Le rilevazioni sono state condotte in diversi anni ma in mesi diversi (Febbraio, Giugno, Dicembre).
+            Non possiamo sapere se il momento della rilevazione ha qualche influenza sull'audience e quindi
+            questa variabilità possa inficiare i confronti diretti.</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) -->
+		<p>La lunghezza della barre a prima vista sembre proporzionale, tuttavia si notano due problemi principali:</p>
+		<ul>
+			<li>La lunghezza delle barre appare approssimata; ad esempio i le prime quattro barre relativ a <em>Linkedin</em>
+				pur corrispondendo a valori variabili da 5,0 a 5,8 hanno tutte uguale lunghezza.</li>
+			<li>I numeri riportati sull'asse verticale non paiono accuratamente allineati ai reppresentati dalle
+				barre; ad esempio l'estremo superiore della prima barra di facebook, corrispondente al valore di 24,6,
+				è chiaramente al di sotto del numero 24 sull'asse.
+			</li>
+		</ul>
+		<p>Si nota il fatto positivo che l'asse verticale è correttamente con base a zero.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>Tutti gli elementi del grafico sono utili. Gli unici elementi decorativi che potrebbero
+    essere omessi sono il il logo e la decorazione (le 5 stelle).</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>Sono presenti diversi problemi di chiarezza:</p>
+        <ul>
+            <li>i gruppi di barre relative ai diverse social media sono ammucchiati e non sono di
+                facile discernimento;</li>
+            <li>la corrispondenza tra il colore delle barre e la data della rilevazione
+                è codificata nella legenda: questo richiede un movimento alternato
+                dello sguarda tra la legenda e le barre;</li>
+            <li>l'andamento nel tempo è di difficile lettura in quanto le barre tendono
+                a concentrare l'attenzione sui singoli valori piuttosto che sull'andamento;</li>
+			<li>l'asse verticale non riporta le tacche corrispondenti ai valori; questa mancanza, unita
+				ai problemi di proporzionalità menzionati sopra, rende la lettura difficoltosa;</li>
+			<li>l'assenza di una griglia orizzontale, in presenza di tantissime barre rende difficile
+				la lettura dei valori;</li>
+			<li>i valori codificati dalle barre sono riportati alla base mentre la lettura della lunghezza
+				della barra porta ad osservare l'estremo superiore; questo renda la lettura dei valori
+				faticosa in quanto richiede un movimento alternativo dello sguardo.</li>
+        </ul>
+		<p>Nonostante l'affiancamento di barre con i colori rosso e verde, non ci sono problemi per
+			chi soffre di cecità ai colori grazie alla significativa differenza in luminosità, come si
+			può osservare con la simulazione delle visione per persone affette da Deuteranopia
+			(la forma più comune)</p>
+		<img src="Deuteranopia.png" style="width:40%;">
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<div class="answer" id="redesign">
+	<!-- sostituire il <p> </p> seguente con un <div></div>
+		contenente il re-design --> 
+	<p>Uso delle linee per evidenziare l'andamento</p>
+
+	<div id="lines"></div>
+
+	<p>Lo stesso grafico può essere reso più leggibile utilizzando un direct labeling invece della legenda:</p>
+	<div id="linesProximity"></div>
+
+    <p>Un'altra possibile visualizzazione si focaliza sulla variazione invece che sui valori assoluti.</p>
+    <p>Vista la diversa ampiezza degli intervalli tra le variazioni si è deciso
+        di riportare la <em>variazione media giornaliera</em> invece della variazione totale nell'intervallo
+        in quanto quest'ultimo valore non sarebbe confrontabile. Ad esempio nel periodo da Giugno a Dicembre
+        2016 c'è stato un aumento medio di utenti per Instagram e Linkedin di circa 14mila nuovi utenti al giorno.</p>
+    <p>È possibile fare il focus su un medium facendo un doppio click sulla corrispondente legenda.</p>
+    <div id="change"></div>
+
+	<script>
+        var _MS_PER_DAY = 1000 * 60 * 60 * 24;
+
+        // a and b are javascript Date objects
+        function dateDiffInDays(a, b) {
+            // Discard the time and time-zone information.
+            var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+            var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+
+            return Math.floor((utc2 - utc1) / _MS_PER_DAY);
+        }
+        window.onload = function() {
+            Plotly.d3.json("audience.json", function (error, data) {
+                if (error) {
+                    console.error("Impossibile caricare i dati: " + error);
+                    return;
+                }
+				var medium;
+                var traces=[];
+                for( medium in data){
+					traces.push({
+						name : medium,
+						x : data[medium].date,
+                    	y : data[medium].measure,
+						type : "scatter",
+                        hoverinfo:"yx"
+					});
+                }
+
+                var layout = {
+                    width: 800, height: 500,
+                    title: "Evoluzione Audience Social Media in Italia",
+                    yaxis: {title: "Audience [milioni]"},
+                    xaxis: {title: "Data Rilevazione"}
+                };
+
+                Plotly.plot("lines", traces, layout, {displayModeBar: false});
+
+
+                // Same plot but using direct labeling (proximity gestalt)
+                var palette = ["rgb(31, 119, 180)","rgb(255, 127, 14)","rgb(44, 160, 44)","rgb(214, 39, 40)",
+					           "rgb(148, 103, 189)","rgb(140, 86, 75)","rgb(227, 119, 194)","rgb(127, 127, 127)"];
+
+                var lastDate;
+                var lastMeasure;
+                var prevMeasure;
+                var annotations=[];
+                var yshift=0;
+                var cols = palette.reverse();
+                for( medium in data){
+					prevMeasure = lastMeasure;
+                    lastDate= data[medium].date[data[medium].date.length-1];
+                    lastMeasure = data[medium].measure[data[medium].measure.length-1];
+                    if(Math.abs(prevMeasure-lastMeasure)<0.5){
+                        yshift = -10;
+                    }else{
+                        yshift = 0;
+					}
+                    annotations.push({
+						x: lastDate,
+						y: lastMeasure,
+						text: medium,
+                        xanchor:"left",
+                        showarrow:false,
+						xshift: 5,
+						yshift : yshift,
+						font: { color : cols.pop() }
+                    });
+                }
+
+
+                layout = {
+                    width: 800, height: 500,
+                    title: "Evoluzione Audience Social Media in Italia",
+                    yaxis: {title: "Audience [milioni]"},
+                    xaxis: {title: "Data Rilevazione"},
+                    showlegend: false,
+					annotations : annotations
+                };
+                Plotly.plot("linesProximity", traces, layout, {displayModeBar: false});
+
+
+                /// Calcola l'incremento normalizzato per il numero di giorni
+                traces=[];
+                cols = palette.reverse();
+                for( medium in data){
+                    if(!data.hasOwnProperty(medium)) continue;
+                    var dates = data[medium].date.map( function(d){ return new Date(d)});
+                    var k;
+                    for(k=0; k<dates.length; ++k){  // find the first valid date
+                        if(!isNaN(Number.parseInt(data[medium].measure[k]))) break;
+                    }
+                    console.log(medium + " : " + k);
+                    var trace = {
+                        name : medium,
+                        type : "scatter",
+                        hoverinfo:"y",
+                        line: {
+                            color: cols.pop(), shape: "vh"
+                        },
+                        x : [data[medium].date[k]],
+                        y : [0]
+                    };
+                    for(var i=k+1; i<dates.length; ++i){
+                        var diff = (dates[i] - dates[i-1]) / _MS_PER_DAY;
+                        var incr = (data[medium].measure[i] - data[medium].measure[i-1]) / diff * 1000;
+                        trace.x.push(data[medium].date[i]);
+                        trace.y.push(Math.round(incr));
+                    }
+                    //console.log("Creating trace " + medium);
+                    //console.log(trace);
+                    traces.push(trace);
+                }
+                layout = {
+                    width: 800, height: 500,
+                    title: "Variazione Audience Social Media in Italia",
+                    yaxis: {
+                        title: "Nuovi utenti medi per giorno [migliaia]",
+                        ticksuffix:"k"
+                    },
+                    xaxis: {title: "Periodo Rilevazione"},
+                    showlegend: true
+                };
+                console.log(traces);
+                Plotly.plot("change", traces, layout, {displayModeBar: false});
+
+
+            });
+		};
+		</script>
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Che tipo di rappresentazione è in grado di rappresentare
+		al meglio l'evoluzione nel tempo di una misura?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Diagramma a punti (scatter)</li>
+			<li>Diagramma a barre</li>
+			<li>Diagramma a linee</li>
+			<li>Diagramma a pendenza (slope)</li>
+			<li>Diagramma a torta</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+        Quale istruzione Javascript permette di ottenere il nome
+		del server che ospita la pagina corrente?
+	</div>
+	<div class="options">
+		<ul>
+			<li><code>document.host</code></li>
+			<li><code>document.location.host</code></li>
+			<li><code>document.location.hostname</code></li>
+			<li><code>document.location.server</code></li>
+			<li><code>document.server</code></li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+<script>
+    (function(){
+        var options = document.querySelectorAll(".options li");
+        var hint = function(){
+            var pop = document.createElement("div");
+            pop.style.position="absolute";
+            pop.innerHTML = "Per selezionare la risposta '<em>" +
+                this.innerText.replace("<","&lt;").replace(">","&gt;") +
+                "</em>' è necessario "+
+                "modificare il documento aggiungendo la classe "+
+                "'<code>selected</code>' all'elemento" +
+                "<code>&lt;li&gt;</code> corrispondente:<br>" +
+                "<code>&lt;li&gt;</code> diventa " +
+                "<code>&lt;li class=\"selected\"&gt;</code>"
+            ;
+            pop.classList.add("popup");
+            this.appendChild(pop);
+            this.style.position = "relative";
+            pop.onmouseout = function(){
+                if(pop) {
+                    pop.style.setProperty("visibility", "hidden");
+                    pop.parentElement.removeChild(pop);
+                    pop = null;
+                }
+            };
+            setTimeout(pop.onmouseout, 7000);
+        };
+        for(var i=0; i<options.length;++i){
+            options[i].onclick=hint;
+        }
+    })();
+</script>
+</html>

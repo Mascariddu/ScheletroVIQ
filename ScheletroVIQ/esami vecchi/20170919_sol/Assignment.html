@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<title>Esame 19 Settembre 2017 - Soluzione</title>
+	<link href="VIQAssign.css" rel="stylesheet"/>
+	<script src="https://oop.polito.it/js/plotly-latest.min.js"></script>
+	<script src="https://oop.polito.it/js/jquery-3.2.1.min.js"></script>
+	<meta charset="utf-8">
+</head>
+<body>
+<header>
+<p>Visualizzazione dell'Informazione Quantitativa</p>
+<h1>Esame 19 Settembre 2017</h1>
+</header>
+<article>
+<section>
+<p>Si consideri il seguente grafico con la distribuzione di professori universitari (e tra loro quello Ordinari)
+	suddivisi per fasce d'età.</p>
+    <p>Il grafico compare in un articolo de <em>Il Sole 24 Ore</em> dal titolo <strong>Università, in cattedra solo 20 ordinari con meno di 40 anni</strong></p>
+
+<img src="Professori.png" style="width:50%;margin-left:15%;">
+
+</section>
+
+<section>
+<h2>Analisi</h2>
+Analizzare il grafico sopra riportato secondo gli aspetti seguenti:
+<dl>
+<dt><code>Q</code>uestion:</dt>
+<dd>è stata definita chiaramente o è evidente una domanda (o più di una) a cui la visualizzazione risponde?
+	<div class="answer" id="analysis-Q">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>La domanda, sebbene non presente direttamente nel grafico, è evidente dal titolo dell'articolo.
+	Si tratta di evidenziare la proporzioni limitata di professori giovani (sotto i 40)
+        e dei professori ordinari in particolare</p>
+		<p><strong>Osservazione:</strong> i professori ordinari sono un sottoinsieme dei docenti di ruolo,
+            in particolare rappresentano la qualifica più elevata nella progressione di carriera accademica.</p>
+	</div>
+</dd>
+<dt><code>D</code>ata:</dt>
+<dd>i dati mostrati sono validi e supportano la domanda?
+	<div class="answer" id="analysis-D">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>I dati presentano due problemi principali:</p>
+		<ul>
+			<li>Il numero di professori under 40 nei due grafici sembrano diversi
+			<ul>
+				<li>Nel grafico superiore 2384 docenti under 40 di cui 20 ordinari</li>
+				<li>Nel grafico inferiore 3334 (=235+3109) docenti e 45 (=1+44) ordinari</li>
+			</ul>
+				<p>Questa discrepanza può essere spiegata come un errore oppure considerando che a rigore
+				l'espressione <em>under 40</em> comprende i docenti fino a 39 anni.
+				Se accettiamo questa lettura significa che ci sono 960 docenti con esattamente 40 anni
+                    tra cui 24 ordinari.</p>
+			</li>
+			<li>I range di età riportati non sono uniformi, alcuni sono da 5 anni, altri da 10.
+				Questo comporta che il numero di docenti non può essere direttamente confrontato.
+                Un confronto diretto altera la percezione delle differenze esistenti.
+			</li>
+		</ul>
+        <p>Inoltre, occorre considerare che per confrontare la distribuzione di età dei professori
+        in generale e dei professori ordinari può essere appropriato l'uso di percentuali invece
+        di valori assoluti. Questo non richiede nuovi dati ma semplicemente la visualizzazione
+        di dati derivati da quelli già presenti nella visualizzazione originale.</p>
+	</div>
+</dd>
+<dt><code>V</code>isual:</dt>
+<dd><p>le caratteristiche visuali sono usate appropriatamente?</p>
+<p>Riguardo gli aspetti visuali si valuti l’integrità visuale secondo i tre aspetti:</p>
+<dl>
+<dt><code>P</code>roportionality:</dt>
+<dd>le misure sono riportate in maniera uniformemente proporzionale?
+	<div class="answer" id="analysis-VP">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>Il diagramma a barre (al netto della linea di separazione) appare proporzionale</p>
+        <p>Il diagramma a bolle riporta i valori in proporziona alle aree.
+        Nonostante la proporzionalità <em>geometrica</em> le aree hanno problemi di percezione fisiologica.</p>
+	</div>
+</dd>
+<dt><code>U</code>tility:</dt>
+<dd>tutti gli elementi presenti nel grafico trasmettono informazioni utili?
+	<div class="answer" id="analysis-VU">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+	<p>La linea tratteggiata non è strettamente necessaria, è sufficiente la spaziatura tra le barre.</p>
+	</div>
+</dd>
+<dt><code>C</code>larity:</dt>
+<dd>i dati del grafico sono chiaramente identificabili e comprensibili (opportunamente descritti)?
+	<div class="answer" id="analysis-VC">
+	<!-- sostituire il <p> </p> seguente con uno
+		contenente la risposta (e senza classe) --> 
+
+        <p>In generale gli elementi sono ben identificati e comprensibili.
+        I colori delle barre del primo grafico fungono implicitamente da legenda per il secondo,
+        questo potrebbe essere di non immediata lettura (la scelta del designer è andata nella direzione della minimalità)</p>
+        <p>La linea tratteggiata rende la seconda barra del primo grafico più prossima al secondo grafico
+            mentra la separa dalla prima barra del primo grafico.</p>
+	</div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+
+
+<section>
+<h2>Design</h2>
+<p>Riprogettare la visualizzazione in modo da risolvere i problemi
+	evidenziati nell'analisi.</p>
+<div class="answer" id="redesign">
+	<!-- sostituire il <p> </p> seguente con un <div></div>
+		contenente il re-design --> 
+	<p>Si sceglie di effettuare il re-design del secondo grafico, quello più dettagliato.
+    I dati (derivati da quelli riportati nell'originale) sono stati aggregati in modo
+    da riferirsi a intervalli di età omogenei e quindi confrontabili.</p>
+    <p>Prima soluzione, utilizzo di barre affiancate.
+    Considerazione: non è ovvio, senza note addizionali, capire che la barra dei
+        prof. ordinari rappresenta una parte dei docenti.</p>
+    <div id="bar"></div>
+    <p>Seconda soluzione, utilizzo di barre impilate (<em>stacked</em>).
+        Si è deciso di rappresentare due categorie complementari (Ordinari e NON Ordinari).
+        In questo caso è più evidente il rapporto tra le categorie di docenza.
+        </p>
+    <div id="stackbar"></div>
+    <p>Terza soluzione, linee e aree sovrapposte.
+        In questo caso la relazione tra le diverse categorie di docenza è
+        più evidente, inoltre il valore molto piccolo dei docenti nella fascia
+        31-40 (45) risulta più visibile rispetto alle soluzioni a barre.</p>
+    <div id="lines"></div>
+    <p>Quarta soluzione, si riportano i valori percentuali di distribuzione
+    tra le fasce di età delle diverse categorie di docenti.</p>
+    <div id="pctLines"></div>
+    <hr>
+    <p>In aggiunta ai dati dettagliati, qui sotto riporto i diagrammi relativi alla dicotomia
+        under/over 40. A differenza dell'originale, i valori usati in questo diagramma sono coerenti
+        con quelli nell'altro diagramma. Si usano degli slope graph per facilitare il confronto.</p>
+    <p>Prima alternativa: slope chart con i valori assoluti dei numeri di professori.</p>
+    <div id="slope"></div>
+    <p>Seconda alternativa: slope chart con percentuali su docenti e ordinari.</p>
+    <div id="slopePct"></div>
+    <script>
+        window.onload = function() {
+            Plotly.d3.csv("docenti.csv", function (error, data) {
+                if (error) {
+                    console.log("Impossibile caricare i dati: " + error);
+                    return;
+                }
+                var eta = [];
+                var docenti = [];
+                var ordinari = [];
+                var nonordinari = [];
+                var labelRuolo = [];
+                var labelOrdinari = [];
+                var totOrdinari = 0;
+                var totDocenti = 0;
+
+                for (var i = 0; i < data.length; i++) {
+                    eta.push(data[i].ETA);
+                    docenti.push(+data[i].DOCENTI);
+                    totDocenti += +data[i].DOCENTI;
+                    ordinari.push(+data[i].ORDINARI);
+                    totOrdinari += +data[i].ORDINARI;
+                    nonordinari.push(+data[i].DOCENTI-data[i].ORDINARI)
+                    //labelRuolo.push(+data[i].Ruolo + " di ruolo");
+                    //labelOrdinari.push(+data[i].Ordinari + " ordinari");
+                }
+
+                // paired barchart
+                var traces = [
+                    {
+                        name: "Docenti di ruolo",
+                        y: eta,
+                        x: docenti,
+                        type: "bar",
+                        orientation:"h",
+                        //text: labelRuolo,
+                        hoverinfo: "x+y"
+                    },
+                    {
+                        name: "Professori Ordinari",
+                        y: eta,
+                        x: ordinari,
+                        type: "bar",
+                        orientation:"h",
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+
+                var layout = {
+                    width:800,height:500,
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    yaxis: {title: "Fascia d'eta ",autorange:'reversed' },
+                    xaxis: {title: "Numero di professori"},
+                    annotations: [{x:45,y:"31-40",text:"45 docenti", ax:60, ay:15,yshift:-15}]
+                };
+
+                Plotly.plot("bar", traces, layout, {displayModeBar: false});
+
+
+                // stacked bar chart
+                var traces = [
+                    {
+                        name: "Professori NON Ordinari",
+                        y: eta,
+                        x: docenti,
+                        type: "bar",
+                        orientation:"h",
+                        //text: labelRuolo,
+                        hoverinfo: "x+y"
+                    },
+                    {
+                        name: "Professori Ordinari",
+                        y: eta,
+                        x: ordinari,
+                        type: "bar",
+                        orientation:"h",
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+                var layout = {
+                    width:800,height:500,
+                    barmode:'stack',
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    yaxis: {title: "Fascia d'eta",autorange:'reversed'},
+                    xaxis: {title: "Numero di professori"},
+                    annotations: [{x:3389,y:"31-40",text:"45 docenti", ax:10, ay:-35,yshift:30}]
+                };
+                Plotly.plot("stackbar", traces, layout, {displayModeBar: false});
+
+
+                // line area chart
+                traces = [
+                    {
+                        name: "Docenti di ruolo",
+                        x: eta,
+                        y: docenti,
+                        type:"scatter",
+                        fill:"tozeroy"
+
+                        //text: labelRuolo,
+                        //hoverinfo: "text"
+                    },
+                    {
+                        name: "Professori Ordinari",
+                        x: eta,
+                        y: ordinari,
+                        type:"scatter",
+                        fill:"tozeroy",
+
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+
+                layout = {
+                    width:800,height:400,
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    xaxis: {title: "Fascia d'eta "},
+                    yaxis: {title: "Numero di professori"}
+                };
+
+                Plotly.plot("lines", traces, layout, {displayModeBar: false});
+
+                // percentage line area chart
+                var pctOrdinari=ordinari.map(function(x){ return x/totOrdinari});
+                var pctDocenti=docenti.map(function(x){ return x/totDocenti});
+                traces = [
+                    {
+                        name: "Docenti di ruolo",
+                        x: eta,
+                        y: pctDocenti,
+                        type:"scatter",
+
+                        //text: labelRuolo,
+                        hoverinfo: "x+y"
+                    },
+                    {
+                        name: "Professori Ordinari",
+                        x: eta,
+                        y: pctOrdinari,
+                        type:"scatter",
+
+
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+
+                layout = {
+                    width:800,height:500,
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    xaxis: {title: "Fascia d'eta "},
+                    yaxis: {title: "Percentuale di professori",tickformat:".1%",range:[0,.5]}
+                };
+
+                Plotly.plot("pctLines", traces, layout, {displayModeBar: false});
+
+
+                // summary dichotomy slope absolute numbers
+                traces = [
+                    {
+                        name: "Over 40",
+                        x: ["Docenti di ruolo","Professori Ordinari"],
+                            y: [45537,12930],
+                        type:"scatter",
+
+                        //text: labelRuolo,
+                        hoverinfo: "x+y"
+                    },
+                    {
+                        name: "Under 40",
+                        x: ["Docenti di ruolo","Professori Ordinari"],
+                        y: [3344,45],
+                        type:"scatter",
+
+
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+
+                layout = {
+                    width:500,height:500,
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    xaxis: {title: "Categoria"},
+                    yaxis: {title: "Numero professori"},
+                    annotations : [
+                        {x:"Docenti di ruolo",y:45537,text:"Over 40",
+                            xanchor:"right",showarrow:false, xshift:-3},
+                        {x:"Docenti di ruolo",y:3344,text:"Under 40",
+                            xanchor:"right",showarrow:false, xshift:-3},
+                        {x:"Professori Ordinari",y:12930,text:"Over 40",
+                            xanchor:"left",showarrow:false, xshift: 3},
+                        {x:"Professori Ordinari",y:45,text:"Under 40",
+                            xanchor:"left",showarrow:false,yshift:6, xshift: 3}
+                    ],
+                    showlegend: false
+                };
+
+                Plotly.plot("slope", traces, layout, {displayModeBar: false});
+
+
+
+                // summary dichotomy slope percentages
+                traces = [
+                    {
+                        name: "Over 40",
+                        x: ["Docenti di ruolo","Professori Ordinari"],
+                        y: [45537/(45537+3344),12930/(12930+45)],
+                        type:"scatter",
+
+                        //text: labelRuolo,
+                        hoverinfo: "x+y"
+                    },
+                    {
+                        name: "Under 40",
+                        x: ["Docenti di ruolo","Professori Ordinari"],
+                        y: [3344/(45537+3344),45/(12930+45)],
+                        type:"scatter",
+
+
+                        //text: labelOrdinari,
+                        hoverinfo: "x+y"
+                    }];
+
+                layout = {
+                    width:500,height:500,
+                    title: "Docenti di ruolo e Professori Ordinari, anno 2016",
+                    xaxis: {title: "Categoria"},
+                    yaxis: {title: "Percentuale",tickformat:".1%"},
+                    annotations : [
+                        {x:"Docenti di ruolo",y:46533/(46533+2348),text:"Over 40",
+                            xanchor:"right",showarrow:false, xshift:-3},
+                        {x:"Docenti di ruolo",y:2348/(46533+2348),text:"Under 40",
+                            xanchor:"right",showarrow:false, xshift:-3},
+                        {x:"Professori Ordinari",y:12975/(12975+20),text:"Over 40",
+                            xanchor:"left",showarrow:false, xshift: 3},
+                        {x:"Professori Ordinari",y:20/(12975+20),text:"Under 40",
+                            xanchor:"left",showarrow:false,yshift:6, xshift: 3}
+                    ],
+                    showlegend: false
+                };
+
+                Plotly.plot("slopePct", traces, layout, {displayModeBar: false});
+
+            });
+        }
+    </script>
+</div>
+</section>
+
+<p class="hint">
+Inserire le risposte all'interno del presente file,
+in particolare negli elementi <code>&lt;div&gt;</code>
+che hanno come classe <code>answer</code>.
+</p>
+</article>
+
+<!-- --------------------------------------------------- -->
+<article>
+<h2>Domande</h2>
+<section>
+	<div class="question">
+	Quale attributo di un punto può essere utilizzato
+		per rappresentare adeguatamente una misura su scala <em>ratio</em>?
+	</div>
+	<div class="options">
+		<ul>
+			<li>Dimensione</li>
+			<li>Inclinazione</li>
+			<li>Lunghezza</li>
+			<li>Posizione rispetto ad un asse</li>
+			<li>Tinta</li>
+		</ul>
+	</div>
+</section>
+<section>
+	<div class="question">
+        Qual'è il risultato della seguente istruzion Javascript eseguito in un browser?
+		<pre>
+			window.utente = 'Rossi';
+		</pre>
+	</div>
+	<div class="options">
+		<ul>
+			<li>Consente di definire un <em>cookie</em></li>
+            <li>Definisce una variabile globale</li>
+            <li>Definisce una proprietà accessibile tramite l'oggetto <code>window</code></li>
+			<li>È errata perché non termina con un <code>;</code></li>
+			<li>È errata perché l'oggetto <code>window</code> è in sola lettura</li>
+		</ul>
+	</div>
+</section>
+<p class="hint">Per rispondere alle domande assegnare la classe
+<code>selected</code> all'elemento della lista (<code>&lt;li&gt;</code>)
+che rappresenta la risposta corretta.
+</p> 
+</article>
+</body>
+<script>
+    (function(){
+        var options = document.querySelectorAll(".options li");
+        var hint = function(){
+            var pop = document.createElement("div");
+            pop.style.position="absolute";
+            pop.innerHTML = "Per selezionare la risposta '<em>" +
+                this.innerText.replace("<","&lt;").replace(">","&gt;") +
+                "</em>' è necessario "+
+                "modificare il documento aggiungendo la classe "+
+                "'<code>selected</code>' all'elemento" +
+                "<code>&lt;li&gt;</code> corrispondente:<br>" +
+                "<code>&lt;li&gt;</code> diventa " +
+                "<code>&lt;li class=\"selected\"&gt;</code>"
+            ;
+            pop.classList.add("popup");
+            this.appendChild(pop);
+            this.style.position = "relative";
+            pop.onmouseout = function(){
+                if(pop) {
+                    pop.style.setProperty("visibility", "hidden");
+                    pop.parentElement.removeChild(pop);
+                    pop = null;
+                }
+            };
+            setTimeout(pop.onmouseout, 7000);
+        };
+        for(var i=0; i<options.length;++i){
+            options[i].onclick=hint;
+        }
+    })();
+</script>
+</html>
